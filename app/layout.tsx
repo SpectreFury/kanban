@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toast";
 
 const interSans = Inter({
   variable: "--font-sans",
-  subsets: ["latin"]
-})
-
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,11 +15,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${interSans.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${interSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
+      <Toaster/>
     </html>
   );
 }
