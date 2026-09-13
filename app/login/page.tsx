@@ -14,17 +14,22 @@ import {
 } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.email(),
   password: z
     .string()
-    .min(8, "Password should be atleast 8 characters")
-    .max(32, "Password should be atleast 8 characters"),
+    .min(8, "Password should be at least 8 characters")
+    .max(32, "Password should be at most 32 characters"),
 });
 
+type FormSchema = z.infer<typeof formSchema>;
+
 const LoginPage = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const router = useRouter();
+
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
@@ -32,24 +37,27 @@ const LoginPage = () => {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log("Login data: ", data);
-
+  async function onSubmit(data: FormSchema) {
     const { error } = await authClient.signIn.email(
       {
         email: data.email,
         password: data.password,
       },
       {
-        onRequest: (ctx) => {
+        onRequest: () => {
           // Loading
         },
 
-        onSuccess: (ctx) => {},
-
-        onError: (ctx) => {
+        onSuccess: () => {
           toast.add({
-            title: "Error occurred while logging in",
+            title: "Logged in"
+          })
+          router.replace("/kanban")
+        },
+
+        onError: () => {
+          toast.add({
+            title: "Unable to log in",
           });
         },
       },
@@ -57,10 +65,23 @@ const LoginPage = () => {
   }
 
   return (
-    <main>
-      <div className="mt-40 mx-auto container flex justify-center items-center flex-col gap-2">
-        <div className="w-96">
-          <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+    <main className="flex min-h-svh items-center justify-center px-4 py-10">
+      <div className="w-full max-w-sm">
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Welcome back
+          </h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Log in to your Kanban workspace
+          </p>
+        </div>
+
+        <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
+          <form
+            id="login-form"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col"
+          >
             <FieldGroup>
               <Controller
                 name="email"
@@ -71,8 +92,11 @@ const LoginPage = () => {
                     <Input
                       {...field}
                       id="login-form-email"
+                      className="h-10"
                       aria-invalid={fieldState.invalid}
-                      autoComplete="off"
+                      autoComplete="email"
+                      placeholder="you@example.com"
+                      type="email"
                     />
 
                     {fieldState.error && (
@@ -94,8 +118,9 @@ const LoginPage = () => {
                       {...field}
                       type="password"
                       id="login-form-password"
+                      className="h-10"
                       aria-invalid={fieldState.invalid}
-                      autoComplete="off"
+                      autoComplete="current-password"
                     />
 
                     {fieldState.error && (
@@ -105,14 +130,19 @@ const LoginPage = () => {
                 )}
               />
 
-              <Button type="submit">Login</Button>
+              <Button type="submit" size="lg" className="w-full">
+                Log In
+              </Button>
             </FieldGroup>
           </form>
         </div>
 
-        <p className="text-sm">
-          Already have an account?{" "}
-          <Link href="/signup" className="text-violet-400">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/signup"
+            className="font-medium text-violet-400 hover:underline"
+          >
             Sign up
           </Link>
         </p>
