@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const Home = () => {
+const Home = async () => {
   return (
     <main>
       <nav></nav>
@@ -12,7 +12,10 @@ const Home = () => {
 
       <div className="mt-20 flex flex-col justify-center items-center">
         <div>
-          <Link href="/login" className="bg-violet-400 text-white px-4 py-2 rounded">
+          <Link
+            href="/login"
+            className="bg-violet-400 text-white px-4 py-2 rounded"
+          >
             Log In
           </Link>
         </div>
