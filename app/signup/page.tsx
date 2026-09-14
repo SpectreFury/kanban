@@ -1,5 +1,8 @@
 "use client";
 
+
+import { useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -14,7 +17,8 @@ import {
 } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
 import { authClient } from "@/lib/auth-client";
-import {useRouter} from 'next/navigation'
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z
   .object({
@@ -37,6 +41,7 @@ const formSchema = z
 type FormSchema = z.infer<typeof formSchema>;
 
 const SignupPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<FormSchema>({
@@ -53,25 +58,30 @@ const SignupPage = () => {
     const { error } = await authClient.signUp.email(
       {
         name: data.name,
-        email: data.email, password: data.password,
+        email: data.email,
+        password: data.password,
       },
       {
         onRequest: (ctx) => {
           // Loading
+          setIsLoading(true);
         },
 
         onSuccess: (ctx) => {
           toast.add({
-            title: "Logged in"
-          })
+            title: "Logged in",
+          });
 
-          router.replace("/kanban")
+          setIsLoading(false);
+          router.replace("/kanban");
         },
 
         onError: (ctx) => {
           toast.add({
             title: "Error occurred while signing up",
           });
+
+          setIsLoading(false);
         },
       },
     );
@@ -191,6 +201,7 @@ const SignupPage = () => {
 
               <Button type="submit" size="lg" className="w-full">
                 Sign Up
+                {isLoading ? <Loader2 className="animate-spin" /> : "Sign Up"}
               </Button>
             </FieldGroup>
           </form>

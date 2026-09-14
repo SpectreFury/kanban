@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -15,6 +17,7 @@ import {
 import { toast } from "@/components/ui/toast";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   email: z.email(),
@@ -27,6 +30,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<FormSchema>({
@@ -46,19 +50,25 @@ const LoginPage = () => {
       {
         onRequest: () => {
           // Loading
+
+          setIsLoading(true);
         },
 
         onSuccess: () => {
           toast.add({
-            title: "Logged in"
-          })
-          router.replace("/kanban")
+            title: "Logged in",
+          });
+          router.replace("/kanban");
+
+          setIsLoading(false);
         },
 
         onError: () => {
           toast.add({
             title: "Unable to log in",
           });
+
+          setIsLoading(false);
         },
       },
     );
@@ -131,7 +141,7 @@ const LoginPage = () => {
               />
 
               <Button type="submit" size="lg" className="w-full">
-                Log In
+                {isLoading ? <Loader2 className="animate-spin" /> : "Log In"}
               </Button>
             </FieldGroup>
           </form>
