@@ -16,7 +16,7 @@ import {
   FieldError,
 } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 

@@ -15,7 +15,7 @@ import {
   FieldError,
 } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
@@ -42,7 +42,7 @@ const LoginPage = () => {
   });
 
   async function onSubmit(data: FormSchema) {
-    const { error } = await authClient.signIn.email(
+    await authClient.signIn.email(
       {
         email: data.email,
         password: data.password,
@@ -58,9 +58,10 @@ const LoginPage = () => {
           toast.add({
             title: "Logged in",
           });
-          router.replace("/kanban");
+
 
           setIsLoading(false);
+          router.replace("/kanban");
         },
 
         onError: () => {
