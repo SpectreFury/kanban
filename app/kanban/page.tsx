@@ -30,9 +30,8 @@ const KanbanDashboard = () => {
               </Avatar>
 
               <Button
-                variant="ghost"
                 onClick={signOut}
-                className="cursor-pointer"
+                className="cursor-pointer bg-violet-400 hover:bg-violet-500"
               >
                 Log out
               </Button>
@@ -40,7 +39,7 @@ const KanbanDashboard = () => {
           </nav>
         </div>
       </div>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center mt-40">
         <Card className="w-96">
           <CardHeader>
             <div className="text-lg font-medium font-sans">Your projects</div>

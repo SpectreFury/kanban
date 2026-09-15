@@ -8,6 +8,13 @@
       "when": 1789217385045,
       "tag": "0000_wooden_carnage",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789457848330,
+      "tag": "0001_smooth_pandemic",
+      "breakpoints": true
     }
   ]
 }
