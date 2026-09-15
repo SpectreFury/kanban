@@ -1,5 +1,13 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  index,
+  serial,
+  integer,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -76,6 +84,7 @@ export const verification = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
+  projects: many(project),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -89,5 +98,78 @@ export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
     references: [user.id],
+  }),
+}));
+
+export const project = pgTable("project", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  authorId: text("author_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const projectRelation = relations(project, ({ one, many }) => ({
+  user: one(user, {
+    fields: [project.authorId],
+    references: [user.id],
+  }),
+  kanbanColumn: many(kanbanColumn),
+}));
+
+export const kanbanColumn = pgTable("kanban_column", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().default("Column"),
+  projectId: integer("project_id")
+    .notNull()
+    .references(() => project.id, { onDelete: "cascade" }),
+  position: integer("position").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const kanbanColumnRelations = relations(
+  kanbanColumn,
+  ({ one, many }) => ({
+    project: one(project, {
+      fields: [kanbanColumn.projectId],
+      references: [project.id],
+    }),
+
+    task: many(task),
+  }),
+);
+
+export const task = pgTable(
+  "task",
+  {
+    id: serial("id").primaryKey(),
+    text: text("text").notNull(),
+    position: integer("position").notNull().default(0),
+    kanbanColumnId: integer("kanban_column_id")
+      .notNull()
+      .references(() => kanbanColumn.id, { onDelete: "cascade" }),
+
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("task_kanban_column_id_index").on(table.kanbanColumnId)],
+);
+
+export const taskRelations = relations(task, ({ one, many }) => ({
+  kanbanColumn: one(kanbanColumn, {
+    fields: [task.kanbanColumnId],
+    references: [kanbanColumn.id],
   }),
 }));
