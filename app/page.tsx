@@ -1,7 +1,18 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { headers } from 'next/headers';
+import {auth} from '@/lib/auth/auth'
+import { redirect } from "next/navigation";
 
 const Home = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  
+  if(session?.user) {
+    return redirect("/kanban")
+  }
+
   return (
     <main>
       <nav></nav>
