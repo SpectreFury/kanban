@@ -1,7 +1,11 @@
 import { FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const EmptyProjectsState = () => {
+type EmptyProjectsStateProps = {
+  onNew: () => void;
+};
+
+const EmptyProjectsState = ({ onNew }: EmptyProjectsStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed border-border bg-muted/20 px-6 py-14 text-center">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-violet-400/10 shadow-sm">
@@ -18,7 +22,7 @@ const EmptyProjectsState = () => {
         </p>
       </div>
 
-      <Button size="sm" className="cursor-pointer gap-1">
+      <Button size="sm" onClick={onNew} className="cursor-pointer gap-1">
         <span className="text-lg leading-none">+</span>
         New project
       </Button>
