@@ -50,6 +50,7 @@ const ProjectsSection = ({ initialProjects }: ProjectsSectionProps) => {
               {projects.map((project) => (
                 <ProjectCard
                   key={project.id}
+                  id={project.id}
                   name={project.name}
                   date={project.date}
                 />

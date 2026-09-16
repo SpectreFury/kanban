@@ -2,14 +2,15 @@ import Link from "next/link";
 import { FolderKanban } from "lucide-react";
 
 type ProjectCardProps = {
+  id: string;
   name: string;
   date?: string;
 };
 
-const ProjectCard = ({ name, date }: ProjectCardProps) => {
+const ProjectCard = ({ id, name, date }: ProjectCardProps) => {
   return (
     <Link
-      href="/"
+      href={`/kanban/${id}`}
       className="group flex items-center rounded-xl border border-border bg-background px-4 py-3 transition-colors hover:bg-accent/60"
     >
       <div className="flex min-w-0 items-center gap-3">
