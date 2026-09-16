@@ -31,8 +31,8 @@ const KanbanDashboard = () => {
       <div className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto flex h-14 max-w-screen-xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2.5">
-            <div className="flex items-center justify-center rounded-lg bg-primary/10 p-1.5">
-              <FolderKanban className="h-5 w-5 text-primary" />
+            <div className="flex items-center justify-center rounded-lg bg-violet-400/10 p-1.5">
+              <FolderKanban className="h-5 w-5 text-violet-400" />
             </div>
             <span className="text-lg font-semibold tracking-tight">Kanban</span>
           </nav>
