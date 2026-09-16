@@ -27,10 +27,7 @@ const KanbanNavigation = ({ project }: KanbanNavigationProps) => {
               <ArrowLeft />
             </Link>
 
-            <div
-              aria-hidden="true"
-              className="h-6 w-px shrink-0 bg-border"
-            />
+            <div aria-hidden="true" className="h-6 w-px shrink-0 bg-border" />
 
             <div className="flex min-w-0 items-center gap-2.5">
               <div className="flex shrink-0 items-center justify-center rounded-lg bg-violet-400/10 p-1.5">
