@@ -1,14 +1,28 @@
 import Link from "next/link";
+import { FolderKanban } from "lucide-react";
 
-const ProjectCard = () => {
+type ProjectCardProps = {
+  name: string;
+  date?: string;
+};
+
+const ProjectCard = ({ name, date }: ProjectCardProps) => {
   return (
     <Link
       href="/"
-      className="flex items-center justify-between border border-gray-200 px-4 py-2 rounded-full"
-
+      className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-background px-4 py-3 transition-colors hover:bg-accent/60"
     >
-      <div className="font-medium">Twitter Clone</div>
-      <div className="text-muted-foreground text-xs">12 Sept</div>
+      <div className="flex min-w-0 items-center gap-3">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+          <FolderKanban className="h-4 w-4" />
+        </div>
+        <div className="min-w-0">
+          <div className="truncate font-medium">{name}</div>
+          {date && (
+            <div className="text-xs text-muted-foreground">{date}</div>
+          )}
+        </div>
+      </div>
     </Link>
   );
 };
