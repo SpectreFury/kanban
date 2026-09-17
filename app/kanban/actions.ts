@@ -7,7 +7,7 @@ import { auth } from "@/lib/auth/auth";
 import { db } from "@/db/drizzle";
 import { project } from "@/db/schema";
 import { formatProjectDate } from "@/lib/format";
-import { Project } from "@/types/project";
+import { ProjectSummary } from "@/types/project";
 
 const createProjectSchema = z.object({
   name: z
@@ -18,7 +18,7 @@ const createProjectSchema = z.object({
 });
 
 type CreateProjectResult =
-  | { project: Project; error?: never }
+  | { project: ProjectSummary; error?: never }
   | { project?: never; error: string };
 
 export async function createProject(input: {

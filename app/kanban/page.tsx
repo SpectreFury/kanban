@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth/auth";
 import { db } from "@/db/drizzle";
 import { project } from "@/db/schema";
 import { formatProjectDate } from "@/lib/format";
-import { Project } from "@/types/project";
+import { ProjectSummary } from "@/types/project";
 import UserMenu from "./_components/UserMenu";
 import ProjectsSection from "./_components/ProjectsSection";
 import { FolderKanban } from "lucide-react";
@@ -24,7 +24,7 @@ const KanbanDashboard = async () => {
     orderBy: [desc(project.createdAt)],
   });
 
-  const initialProjects: Project[] = rows.map((row) => ({
+  const initialProjects: ProjectSummary[] = rows.map((row) => ({
     id: String(row.id),
     name: row.name,
     date: formatProjectDate(row.createdAt),

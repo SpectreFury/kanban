@@ -1,3 +1,5 @@
+import { GripVertical } from "lucide-react";
+
 type KanbanTaskPriorityLabelProps = {
   priority: number;
 };
@@ -5,7 +7,12 @@ const KanbanTaskPriorityLabel = ({
   priority,
 }: KanbanTaskPriorityLabelProps) => {
   return (
-    <div className="p-1 bg-violet-200 rounded self-start">#{priority}</div>
+    <div className="flex items-center justify-between">
+      <div className="text-sm px-2 bg-violet-200 rounded-full self-start">
+        #{priority}
+      </div>
+      <GripVertical size={20} className="text-gray-400" />
+    </div>
   );
 };
 

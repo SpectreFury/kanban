@@ -12,17 +12,17 @@ import { Button } from "@/components/ui/button";
 import ProjectCard from "./ProjectCard";
 import EmptyProjectsState from "./EmptyProjectsState";
 import CreateProjectDialog from "./CreateProjectDialog";
-import { Project } from "@/types/project";
+import { ProjectSummary } from "@/types/project";
 
 type ProjectsSectionProps = {
-  initialProjects: Project[];
+  initialProjects: ProjectSummary[];
 };
 
 const ProjectsSection = ({ initialProjects }: ProjectsSectionProps) => {
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [projects, setProjects] = useState<ProjectSummary[]>(initialProjects);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleCreated = (project: Project) => {
+  const handleCreated = (project: ProjectSummary) => {
     setProjects((prev) => [project, ...prev]);
   };
 

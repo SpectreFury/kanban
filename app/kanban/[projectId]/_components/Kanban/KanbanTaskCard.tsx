@@ -1,18 +1,30 @@
+import { useSortable } from "@dnd-kit/react/sortable";
 import KanbanTaskPriorityLabel from "./KanbanTaskPriorityLabel";
 
 type KanbanTaskCardProps = {
   id: number;
   priority: number;
   text: string;
+  position: number;
 };
 
-const KanbanTaskCard = ({ priority, text }: KanbanTaskCardProps) => {
-  return (
-    <div className="bg-white p-2 flex flex-col gap-2">
-      <div>{text}</div>
+const KanbanTaskCard = ({ id, position, text }: KanbanTaskCardProps) => {
+  const { ref } = useSortable({
+    id,
+    index: position,
+    type: "task",
+    accept: "task",
+  });
 
-      <KanbanTaskPriorityLabel priority={priority} />
-    </div>
+  return (
+    <button
+      ref={ref}
+      className="bg-white p-2 flex flex-col gap-2 border rounded-lg"
+    >
+      <div className="self-start">{text}</div>
+
+      <KanbanTaskPriorityLabel priority={0} />
+    </button>
   );
 };
 

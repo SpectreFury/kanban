@@ -18,7 +18,7 @@ import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
 import { Loader2 } from "lucide-react";
 import { createProject } from "../actions";
-import { Project } from "@/types/project";
+import { ProjectSummary } from "@/types/project";
 
 const formSchema = z.object({
   name: z
@@ -33,7 +33,7 @@ type FormSchema = z.infer<typeof formSchema>;
 type CreateProjectDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreated: (project: Project) => void;
+  onCreated: (project: ProjectSummary) => void;
 };
 
 const CreateProjectDialog = ({
