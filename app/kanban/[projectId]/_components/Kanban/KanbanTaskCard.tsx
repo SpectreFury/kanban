@@ -1,30 +1,24 @@
 "use client";
 
-import { useSortable } from "@dnd-kit/react/sortable";
+import { useDraggable } from "@dnd-kit/react";
 import KanbanTaskPriorityLabel from "./KanbanTaskPriorityLabel";
 
 type KanbanTaskCardProps = {
   id: number;
+  priority: number;
   text: string;
-  index: number;
-  columnId: string;
 };
 
-const KanbanTaskCard = ({ id, text, index, columnId }: KanbanTaskCardProps) => {
-  const { ref } = useSortable({
+const KanbanTaskCard = ({ id, priority, text }: KanbanTaskCardProps) => {
+  const { ref } = useDraggable({
     id,
-    index,
-    type: "task",
-    accept: "task",
-    group: columnId,
-    data: { group: columnId },
   });
 
   return (
     <div ref={ref} className="bg-white p-2 flex flex-col gap-2">
       <div>{text}</div>
 
-      <KanbanTaskPriorityLabel priority={0} />
+      <KanbanTaskPriorityLabel priority={priority} />
     </div>
   );
 };
