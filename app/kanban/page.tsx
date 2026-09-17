@@ -1,56 +1,56 @@
-"use client";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { eq, desc } from "drizzle-orm";
+import { auth } from "@/lib/auth/auth";
+import { db } from "@/db/drizzle";
+import { project } from "@/db/schema";
+import { formatProjectDate } from "@/lib/format";
+import { ProjectSummary } from "@/types/project";
+import UserMenu from "./_components/UserMenu";
+import ProjectsSection from "./_components/ProjectsSection";
+import { FolderKanban } from "lucide-react";
 
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth/auth-client";
-import { useRouter } from "next/navigation";
-import ProjectCard from "./_components/ProjectCard";
+const KanbanDashboard = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-const KanbanDashboard = () => {
-  const router = useRouter();
+  if (!session?.user) {
+    redirect("/login");
+  }
 
-  const signOut = async () => {
-    await authClient.signOut();
+  const rows = await db.query.project.findMany({
+    where: eq(project.authorId, session.user.id),
+    orderBy: [desc(project.createdAt)],
+  });
 
-    router.push("/login");
-  };
+  const initialProjects: ProjectSummary[] = rows.map((row) => ({
+    id: String(row.id),
+    name: row.name,
+    date: formatProjectDate(row.createdAt),
+  }));
 
   return (
-    <main>
-      <div className="border-b">
-        <div className="py-2 mx-auto container">
-          <nav className="flex items-center justify-between">
-            <div className="text-lg">Kanban</div>
-
-            <div className="flex items-center gap-2">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>KB</AvatarFallback>
-              </Avatar>
-
-              <Button
-                onClick={signOut}
-                className="cursor-pointer bg-violet-400 hover:bg-violet-500"
-              >
-                Log out
-              </Button>
+    <main className="flex flex-col min-h-svh">
+      <div className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="mx-auto h-14 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <nav className="flex h-full items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center justify-center rounded-lg bg-violet-400/10 p-1.5">
+                <FolderKanban className="h-5 w-5 text-violet-400" />
+              </div>
+              <span className="text-lg font-semibold tracking-tight">Kanban</span>
             </div>
+
+            <UserMenu />
           </nav>
         </div>
       </div>
-      <div className="flex items-center justify-center mt-40">
-        <Card className="w-96">
-          <CardHeader>
-            <div className="text-lg font-medium font-sans">Your projects</div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col gap-2">
-              <ProjectCard />
-              <ProjectCard />
-            </div>
-          </CardContent>
-        </Card>
+
+      <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center justify-center pt-20">
+          <ProjectsSection initialProjects={initialProjects} />
+        </div>
       </div>
     </main>
   );
