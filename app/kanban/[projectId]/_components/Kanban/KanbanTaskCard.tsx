@@ -1,6 +1,3 @@
-"use client";
-
-import { useDraggable } from "@dnd-kit/react";
 import KanbanTaskPriorityLabel from "./KanbanTaskPriorityLabel";
 
 type KanbanTaskCardProps = {
@@ -9,13 +6,9 @@ type KanbanTaskCardProps = {
   text: string;
 };
 
-const KanbanTaskCard = ({ id, priority, text }: KanbanTaskCardProps) => {
-  const { ref } = useDraggable({
-    id,
-  });
-
+const KanbanTaskCard = ({ priority, text }: KanbanTaskCardProps) => {
   return (
-    <div ref={ref} className="bg-white p-2 flex flex-col gap-2">
+    <div className="bg-white p-2 flex flex-col gap-2">
       <div>{text}</div>
 
       <KanbanTaskPriorityLabel priority={priority} />

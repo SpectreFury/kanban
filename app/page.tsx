@@ -44,7 +44,7 @@ const features = [
     icon: GripVertical,
     title: "Drag & drop tasks",
     description:
-      "Move tasks between columns with smooth, tactile drag-and-drop powered by dnd-kit. Reorder inside a column or across the board.",
+      "Move tasks between columns as work progresses. Reorder inside a column or across the board.",
   },
   {
     icon: Zap,
