@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentKanban, getProject } from "./action";
-import KanbanNavigation from "./_components/KanbanNavigation";
-import KanbanColumnCard from "./_components/Kanban/KanbanColumnCard";
-import KanbanDNDArea from "./_components/Kanban/KanbanDNDArea";
+import KanbanBoard from "./_components/KanbanBoard";
 
 const KanbanApp = async ({
   params,
@@ -20,11 +18,7 @@ const KanbanApp = async ({
 
   return (
     <main className="h-screen">
-      <KanbanNavigation project={project} />
-
-      <div className="mx-6 my-4 flex gap-10">
-        <KanbanDNDArea initialProject={project}/>
-      </div>
+      <KanbanBoard initialProject={project} />
     </main>
   );
 };

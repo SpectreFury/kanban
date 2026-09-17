@@ -1,16 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, FolderKanban, Save } from "lucide-react";
+import { ArrowLeft, FolderKanban, Loader2, Save } from "lucide-react";
 import type { Project } from "../action";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type KanbanNavigationProps = {
   project: Project;
+  onSave: () => void;
+  isSaving: boolean;
 };
 
-const KanbanNavigation = ({ project }: KanbanNavigationProps) => {
+const KanbanNavigation = ({
+  project,
+  onSave,
+  isSaving,
+}: KanbanNavigationProps) => {
   return (
     <header className="sticky top-0 z-10 border-b bg-card/80 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -48,10 +54,11 @@ const KanbanNavigation = ({ project }: KanbanNavigationProps) => {
           <div className="flex shrink-0 items-center gap-2">
             <Button
               size="sm"
-              onClick={() => {}}
+              onClick={onSave}
+              disabled={isSaving}
               className="cursor-pointer gap-1.5"
             >
-              <Save />
+              {isSaving ? <Loader2 className="animate-spin" /> : <Save />}
               Save
               <span className="hidden sm:inline">changes</span>
             </Button>
